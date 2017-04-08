@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "985854527891",
+    "project_id": "firebase-sondage"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985854527891:android:b61624800129f9b6",
+        "android_client_info": {
+          "package_name": "rpereira.sondage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985854527891-n5oleu2bpov7ro6fmsfboegasr2k3uc9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "rpereira.sondage",
+            "certificate_hash": "ea46a61d83a1c503514c5c47809de24042fa87ae"
+          }
+        },
+        {
+          "client_id": "985854527891-ej9t9jgl00k72letec0o9dk13tug9tjm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEMyxUlweXksAy3uijv6b2xYYFQp4WUQ0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

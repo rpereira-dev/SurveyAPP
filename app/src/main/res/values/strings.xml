@@ -1,0 +1,12 @@
+<resources>
+    <!-- APP CONSTANTS -->
+    <string name="app_name">Sondage</string>
+
+    <!-- SOCIAL NETWORKS CONSTANTS -->
+    <string name="facebook_app_id">281884062236450</string>
+
+    <!-- VOCABULARY -->
+    <string name="accueil">Accueil</string>
+    <string name="edittext_default_text">Rechercher ...</string>
+
+</resources>
