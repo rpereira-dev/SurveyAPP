@@ -3,7 +3,9 @@
     <color name="colorPrimary">#66bb6a</color>
     <color name="colorPrimaryDark">#529755</color>
     <color name="colorAccent">#ff4081</color>
-    <color name="textColorPrimary">#FFFFFF</color>
-    <color name="navigationBarColor">#000000</color>
+    <color name="colorTitle">#FFFFFF</color>
+    <color name="colorSelectedTabIndicator">#FFE4E1</color>
+    <color name="colorUnselectedTabText">#000000</color>
+    <color name="colorSelectedTabText">#FFFFFF</color>
 
 </resources>

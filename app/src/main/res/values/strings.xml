@@ -6,7 +6,10 @@
     <string name="facebook_app_id">281884062236450</string>
 
     <!-- VOCABULARY -->
-    <string name="accueil">Accueil</string>
-    <string name="edittext_default_text">Rechercher ...</string>
+    <string name="voc_search">search</string>
+    <string name="voc_home">home</string>
+    <string name="voc_trend">trend</string>
+    <string name="voc_new">new</string>
+    <string name="voc_profil">profil</string>
 
 </resources>

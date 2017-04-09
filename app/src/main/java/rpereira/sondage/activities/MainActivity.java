@@ -1,22 +1,30 @@
 package rpereira.sondage.activities;
 
+import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.LinearLayout;
 
 import rpereira.sondage.R;
-import rpereira.sondage.util.Logger;
+import rpereira.sondage.activities.home.ActivityTabHome;
+import rpereira.sondage.activities.home.HomeFragment;
+import rpereira.sondage.activities.profil.ActivityTabProfil;
+import rpereira.sondage.activities.profil.ProfilFragment;
+import rpereira.sondage.activities.survey.ActivityTabSurvey;
+import rpereira.sondage.activities.survey.SurveyFragment;
+import rpereira.sondage.activities.trend.ActivityTabTrend;
+import rpereira.sondage.activities.trend.TrendFragment;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 /**
  * Created by Romain on 07/04/2017.
@@ -24,16 +32,20 @@ import rpereira.sondage.util.Logger;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int[] TAB_ICONS = {
-            R.drawable.home,
-            R.drawable.trend,
-            R.drawable.new_survey,
-            R.drawable.profil,
-    };
+    private static final int TAB_HOME   = 0;
+    private static final int TAB_TREND  = 1;
+    private static final int TAB_SURVEY = 2;
+    private static final int TAB_PROFIL = 3;
+    private static final int TAB_MAX    = 4;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private ViewPagerAdapter viewPagerAdapter;
+
+    public MainActivity() {
+        super();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,66 +53,115 @@ public class MainActivity extends AppCompatActivity {
         this.setContentView(R.layout.activity_main);
 
         //toolbar
-        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
+        this.toolbar = (Toolbar)this.findViewById(R.id.toolbar);
+        this.toolbar.setTitleTextColor(this.getResources().getColor(R.color.colorTitle));
+        this.toolbar.setTitle(R.string.app_name);
         this.setSupportActionBar(this.toolbar);
-        this.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                //TODO: search
-                Logger.log("tapped");
-                return (false);
-            }
-        });
 
-
-        //tab layout / view pager setup
+        //setup tabs layout
         this.tabLayout = (TabLayout) this.findViewById(R.id.tabs);
-        this.viewPager = new ViewPager(this);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this.getSupportFragmentManager());
-        adapter.addFragment(new OneFragment(), "HOME");
-        adapter.addFragment(new OneFragment(), "TRENDS");
-        adapter.addFragment(new OneFragment(), "NEW");
-        adapter.addFragment(new OneFragment(), "PROFIL");
-        this.viewPager.setAdapter(adapter);
-        this.tabLayout.setupWithViewPager(viewPager);
+        this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
+        this.viewPagerAdapter = new ViewPagerAdapter(this.getSupportFragmentManager());
+        this.viewPagerAdapter.linkToViewPager(tabLayout, viewPager);
 
-        //icon setup
-        for (int i = 0 ; i < TAB_ICONS.length ; i++) {
-            this.tabLayout.getTabAt(i).setIcon(TAB_ICONS[i]);
-        }
+        //when we swip pages, update the selected tab
+        this.viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(this.tabLayout));
 
-        //tab listener to properlly swip
-        // Create a tab listener that is called when the user changes tabs.
+        //when we click on a tab, it changes the viewpager adapter cursor
+        this.tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(this.viewPager));
 
+        //set icon to white when selected
+        this.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                viewPagerAdapter.onPageSelected(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> fragmentList = new ArrayList<>();
-        private final List<String> fragmentTitleList = new ArrayList<>();
+    class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
+        private final ActivityTab[] tabs;
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+            this.tabs = new ActivityTab[TAB_MAX];
         }
 
         @Override
         public Fragment getItem(int position) {
-            return (this.fragmentList.get(position));
+            return (this.tabs[position].getFragment());
         }
 
         @Override
         public int getCount() {
-            return (this.fragmentList.size());
+            return (this.tabs.length);
         }
 
-        public void addFragment(Fragment fragment, String title) {
-            this.fragmentList.add(fragment);
-            this.fragmentTitleList.add(title);
+        public void linkToViewPager(TabLayout tabLayout, ViewPager viewPager) {
+
+            this.tabs[TAB_HOME] = new ActivityTabHome(tabLayout);
+            this.tabs[TAB_TREND] = new ActivityTabTrend(tabLayout);
+            this.tabs[TAB_SURVEY] = new ActivityTabSurvey(tabLayout);
+            this.tabs[TAB_PROFIL] = new ActivityTabProfil(tabLayout);
+
+            viewPager.setAdapter(viewPagerAdapter);
+
+            for (ActivityTab tab : this.tabs) {
+                tabLayout.addTab(tab.getTab());
+            }
+            tabLayout.getTabAt(TAB_HOME).select();
+
+            Resources res = tabLayout.getResources();
+            tabLayout.setSelectedTabIndicatorColor(res.getColor(R.color.colorSelectedTabIndicator));
+            tabLayout.setTabTextColors(res.getColor(R.color.colorUnselectedTabText), res.getColor(R.color.colorSelectedTabText));
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return (this.fragmentTitleList.get(position));
+        public void onPageSelected(int position) {
+            switch (position) {
+                case TAB_HOME:
+                    this.tabs[TAB_HOME].setWhiteIcon();
+                    this.tabs[TAB_TREND].setBlackIcon();
+                    this.tabs[TAB_SURVEY].setBlackIcon();
+                    this.tabs[TAB_PROFIL].setBlackIcon();
+                    break ;
+
+                case TAB_TREND:
+                    this.tabs[TAB_HOME].setBlackIcon();
+                    this.tabs[TAB_TREND].setWhiteIcon();
+                    this.tabs[TAB_SURVEY].setBlackIcon();
+                    this.tabs[TAB_PROFIL].setBlackIcon();
+                    break ;
+
+                case TAB_SURVEY:
+                    this.tabs[TAB_HOME].setBlackIcon();
+                    this.tabs[TAB_TREND].setBlackIcon();
+                    this.tabs[TAB_SURVEY].setWhiteIcon();
+                    this.tabs[TAB_PROFIL].setBlackIcon();
+                    break ;
+
+                case TAB_PROFIL:
+                    this.tabs[TAB_HOME].setBlackIcon();
+                    this.tabs[TAB_TREND].setBlackIcon();
+                    this.tabs[TAB_SURVEY].setBlackIcon();
+                    this.tabs[TAB_PROFIL].setWhiteIcon();
+                    break ;
+            }
+
+
+/*            for (ActivityTab tab : this.tabs) {
+                if (tab.getTab().getPosition() == position) {
+                    tab.setWhiteIcon();
+                } else {
+                    tab.setBlackIcon();
+                }
+            }*/
         }
     }
-
 }
