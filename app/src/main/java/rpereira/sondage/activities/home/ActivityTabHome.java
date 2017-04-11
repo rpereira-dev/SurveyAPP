@@ -14,7 +14,7 @@ import rpereira.sondage.activities.ActivityTab;
 public class ActivityTabHome extends ActivityTab {
 
     public ActivityTabHome(TabLayout tabLayout) {
-        super(tabLayout, R.drawable.home_white, R.drawable.home_black, R.string.voc_home, Fragment.instantiate(tabLayout.getContext(), HomeFragment.class.getName()));
+        super(tabLayout, R.drawable.ic_action_home_white, R.drawable.ic_action_home_black, R.string.voc_home, Fragment.instantiate(tabLayout.getContext(), HomeFragment.class.getName()));
         this.setWhiteIcon();
     }
 }

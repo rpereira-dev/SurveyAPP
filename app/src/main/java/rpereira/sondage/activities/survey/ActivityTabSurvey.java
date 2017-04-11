@@ -16,6 +16,6 @@ import rpereira.sondage.activities.home.HomeFragment;
 public class ActivityTabSurvey extends ActivityTab {
 
     public ActivityTabSurvey(TabLayout tabLayout) {
-        super(tabLayout, R.drawable.new_survey_white, R.drawable.new_survey_black, R.string.voc_new, Fragment.instantiate(tabLayout.getContext(), SurveyFragment.class.getName()));
+        super(tabLayout, R.drawable.ic_action_new_survey_white, R.drawable.ic_action_new_survey_black, R.string.voc_new, Fragment.instantiate(tabLayout.getContext(), SurveyFragment.class.getName()));
     }
 }

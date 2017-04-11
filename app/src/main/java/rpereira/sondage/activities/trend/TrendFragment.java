@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import rpereira.sondage.R;
+import rpereira.sondage.activities.ImageTextButton;
 
 /**
  * Created by Romain on 08/04/2017.
@@ -28,9 +29,7 @@ public class TrendFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_profil, container, false);
-        TextView tv = (TextView) v.findViewById(R.id.fragment_text);
-        tv.setText("trend");
+        View v = inflater.inflate(R.layout.fragment_empty, container, false);
         return (v);
     }
 }

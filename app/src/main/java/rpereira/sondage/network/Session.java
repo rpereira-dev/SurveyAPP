@@ -2,6 +2,8 @@ package rpereira.sondage.network;
 
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterSession;
 
 /**
  * Created by Romain on 06/04/2017.
@@ -9,9 +11,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 public class Session {
 
-    private Type type = Type.None;
-    private String token = "{TOKEN}";
-    private String userID = "{USER_ID}";
+    private Type type;
+    private String token;
+    private String userID;
 
     //TODO:
     //private String birthdate;
@@ -30,16 +32,36 @@ public class Session {
         }
     }
 
-    public Session(AccessToken token) {
+    public Session() {
+        this.reset();
+    }
+
+    public void reset() {
+        this.type = Type.None;
+        this.token = "{TOKEN}";
+        this.userID = "{USER_ID}";
+    }
+
+    public void set(AccessToken token) {
+        if (token == null) {
+            this.reset();
+            return ;
+        }
         this.type = Type.Facebook;
         this.token = token.getToken();
         this.userID = token.getUserId();
     }
 
-    public Session(GoogleSignInAccount acc) {
+    public void set(GoogleSignInAccount acc) {
         this.type = Type.Google;
         this.userID = acc.getId();
         this.token = acc.getIdToken();
+    }
+
+    public void set(Result<TwitterSession> result) {
+        this.type = Type.Google;
+        this.userID = Long.toString(result.data.getUserId());
+        this.token = result.data.getAuthToken().token;
     }
 
     public final Type getType() {

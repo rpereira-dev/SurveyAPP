@@ -8,4 +8,7 @@
     <color name="colorUnselectedTabText">#000000</color>
     <color name="colorSelectedTabText">#FFFFFF</color>
 
+    <drawable name="image_text_button_pressed_bg">#7ec0ee</drawable>
+    <drawable name="image_text_button_normal_bg">#00FFFFFF</drawable>
+
 </resources>

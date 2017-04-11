@@ -6,10 +6,39 @@
     <string name="facebook_app_id">281884062236450</string>
 
     <!-- VOCABULARY -->
-    <string name="voc_search">search</string>
-    <string name="voc_home">home</string>
-    <string name="voc_trend">trend</string>
-    <string name="voc_new">new</string>
-    <string name="voc_profil">profil</string>
+    <string name="voc_log_in">Log-in</string>
+    <string name="voc_search">Search</string>
+    <string name="voc_home">Home</string>
+    <string name="voc_trend">Trending</string>
+    <string name="voc_new">New</string>
+    <string name="voc_profil">Profil</string>
+    <string name="voc_login_message">
+        Please select one of the following authentification system to log-in.
+    </string>
+    <string name="voc_logout_message">
+        Are you sure you want to log-out?
+    </string>
+
+    <string name="content_description_image_button_search">All there is to know about Sondage application</string>
+    <string name="content_description_image_button_information">All there is to know about Sondage application</string>
+
+    <string name="voc_app_information_title"><b>All there is to know</b></string>
+
+    <string name="voc_app_information">
+
+        <u>1. Vote system:</u> Please select one of the following authentification system to log-in.
+        Please select one of the following authentification system to log-in.\n\n
+
+        <u>2. Login system:</u> Please select one of the following authentification system to log-in.
+        Please select one of the following authentification system to log-in.
+        Please select one of the following authentification system to log-in.\n\n
+
+        <u>3. Your personnal data:</u> Please select one of the following authentification system to log-in.
+        Please select one of the following authentification system to log-in.\n\n
+
+        <u>4. The source code:</u> The application\'s sources is available at adress:\n
+                \thttps://github.com/rpereira-dev/SurveyAPP
+
+    </string>
 
 </resources>

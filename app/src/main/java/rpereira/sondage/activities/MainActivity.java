@@ -1,6 +1,7 @@
 package rpereira.sondage.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -12,11 +13,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import rpereira.sondage.R;
 import rpereira.sondage.activities.home.ActivityTabHome;
 import rpereira.sondage.activities.home.HomeFragment;
+import rpereira.sondage.activities.informations.InformationActivity;
 import rpereira.sondage.activities.profil.ActivityTabProfil;
 import rpereira.sondage.activities.profil.ProfilFragment;
 import rpereira.sondage.activities.survey.ActivityTabSurvey;
@@ -25,6 +29,7 @@ import rpereira.sondage.activities.trend.ActivityTabTrend;
 import rpereira.sondage.activities.trend.TrendFragment;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+import static java.security.AccessController.getContext;
 
 /**
  * Created by Romain on 07/04/2017.
@@ -55,8 +60,18 @@ public class MainActivity extends AppCompatActivity {
         //toolbar
         this.toolbar = (Toolbar)this.findViewById(R.id.toolbar);
         this.toolbar.setTitleTextColor(this.getResources().getColor(R.color.colorTitle));
-        this.toolbar.setTitle(R.string.app_name);
         this.setSupportActionBar(this.toolbar);
+
+        //search button setup
+
+        //informations button setup
+        ImageButton imageButtonInformations = (ImageButton) this.findViewById(R.id.imageButtonInformation);
+        imageButtonInformations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getBaseContext(), InformationActivity.class));
+            }
+        });
 
         //setup tabs layout
         this.tabLayout = (TabLayout) this.findViewById(R.id.tabs);
@@ -78,11 +93,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 viewPagerAdapter.onPageSelected(position);
+                toolbar.setTitle(viewPagerAdapter.getActionBarTitle( position));
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
+
+        //set default pager (and so toggle events to setup everything properly)
+        this.viewPager.setCurrentItem(0);
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -123,8 +142,20 @@ public class MainActivity extends AppCompatActivity {
             tabLayout.setTabTextColors(res.getColor(R.color.colorUnselectedTabText), res.getColor(R.color.colorSelectedTabText));
         }
 
+        public CharSequence getActionBarTitle(int position) {
+            return (this.tabs[position].getTitle());
+        }
+
         public void onPageSelected(int position) {
-            switch (position) {
+
+            for (ActivityTab tab : this.tabs) {
+                if (tab.getTab().getPosition() == position) {
+                    tab.setWhiteIcon();
+                } else {
+                    tab.setBlackIcon();
+                }
+            }
+/*            switch (position) {
                 case TAB_HOME:
                     this.tabs[TAB_HOME].setWhiteIcon();
                     this.tabs[TAB_TREND].setBlackIcon();
@@ -152,15 +183,6 @@ public class MainActivity extends AppCompatActivity {
                     this.tabs[TAB_SURVEY].setBlackIcon();
                     this.tabs[TAB_PROFIL].setWhiteIcon();
                     break ;
-            }
-
-
-/*            for (ActivityTab tab : this.tabs) {
-                if (tab.getTab().getPosition() == position) {
-                    tab.setWhiteIcon();
-                } else {
-                    tab.setBlackIcon();
-                }
             }*/
         }
     }

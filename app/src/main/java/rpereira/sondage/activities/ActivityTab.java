@@ -15,26 +15,23 @@ public class ActivityTab {
     private final Fragment fragment;
     private final TabLayout.Tab tab;
 
+    private String title;
     private int whiteIcon;
     private int blackIcon;
     private int curIcon;
 
-    public ActivityTab(TabLayout tabLayout, int whiteIcon, int blackIcon, int title, Fragment fragment) {
+    public ActivityTab(TabLayout tabLayout, int whiteIcon, int blackIcon, int titleID, Fragment fragment) {
         this.tabLayout = tabLayout;
         this.fragment = fragment;
         this.tab = tabLayout.newTab();
         this.whiteIcon = whiteIcon;
         this.blackIcon = blackIcon;
+        this.title = tabLayout.getResources().getString(titleID);
         this.setBlackIcon();
-        this.setText(title);
     }
 
     public Drawable getIcon() {
         return (this.tab.getIcon());
-    }
-
-    public CharSequence getTitle() {
-        return (this.tab.getText());
     }
 
     public Fragment getFragment() {
@@ -69,7 +66,7 @@ public class ActivityTab {
         this.tab.setIcon(this.curIcon);
     }
 
-    public void setText(int resID) {
-        this.tab.setText(resID);
+    public CharSequence getTitle() {
+        return (this.title);
     }
 }

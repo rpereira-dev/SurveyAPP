@@ -10,60 +10,50 @@
 
     <ImageView
         android:id="@+id/imageViewSwallow"
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:background="?attr/colorPrimary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/swallow_white" />
+        app:srcCompat="@drawable/ic_action_swallow_black"
+        android:contentDescription="@string/app_name" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="56dp"
         android:background="?attr/colorPrimary"
-        android:titleTextColor="@color/colorTitle"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp"
         app:layout_constraintLeft_toRightOf="@+id/imageViewSwallow"
-        android:layout_marginLeft="0dp"
         app:layout_constraintRight_toLeftOf="@+id/imageButtonSearch"
-        android:layout_marginRight="0dp" />
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <ImageButton
         android:id="@+id/imageButtonSearch"
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:background="?attr/colorPrimary"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/toolbar"
+        app:layout_constraintRight_toLeftOf="@+id/imageButtonInformation"
+        android:contentDescription="@string/content_description_image_button_search"
         app:srcCompat="@android:drawable/ic_menu_search" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="0dp"
+    <ImageButton
+        android:id="@+id/imageButtonInformation"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="?attr/colorPrimary"
+        android:contentDescription="@string/content_description_image_button_information"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/tabs" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_info_details"
+        />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_height="56dp"
         android:background="?attr/colorPrimary"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -71,5 +61,16 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:tabGravity="fill"
         app:tabMode="fixed" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabs" />
+
 </android.support.constraint.ConstraintLayout>
 

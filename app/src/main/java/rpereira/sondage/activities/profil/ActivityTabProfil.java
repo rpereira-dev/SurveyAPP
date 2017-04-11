@@ -15,6 +15,6 @@ import rpereira.sondage.activities.home.HomeFragment;
 public class ActivityTabProfil extends ActivityTab {
 
     public ActivityTabProfil(TabLayout tabLayout) {
-        super(tabLayout, R.drawable.profil_white, R.drawable.profil_black, R.string.voc_profil, Fragment.instantiate(tabLayout.getContext(), ProfilFragment.class.getName()));
+        super(tabLayout, R.drawable.ic_action_profil_white, R.drawable.ic_action_profil_black, R.string.voc_profil, Fragment.instantiate(tabLayout.getContext(), ProfilFragment.class.getName()));
     }
 }

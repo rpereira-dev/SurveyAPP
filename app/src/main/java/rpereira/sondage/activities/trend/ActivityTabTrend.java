@@ -15,6 +15,6 @@ import rpereira.sondage.activities.home.HomeFragment;
 public class ActivityTabTrend extends ActivityTab {
 
     public ActivityTabTrend(TabLayout tabLayout) {
-        super(tabLayout, R.drawable.trend_white, R.drawable.trend_black, R.string.voc_trend, Fragment.instantiate(tabLayout.getContext(), TrendFragment.class.getName()));
+        super(tabLayout, R.drawable.ic_action_trend_white, R.drawable.ic_action_trend_black, R.string.voc_trend, Fragment.instantiate(tabLayout.getContext(), TrendFragment.class.getName()));
     }
 }
