@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         } else {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(this.margin, this.margin, this.margin, this.margin);
+            layoutParams.setMargins(this.margin, 0, this.margin, this.margin);
             this.textView.setText(R.string.voc_logout_message);
             if (this.session.getType() == Session.Type.Facebook) {
                 this.createFacebookButton();
@@ -164,12 +164,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     //create session sucessfully
-    private final void onLogin() {
+    private final void onLogin(String token, String userID, Session.Type type) {
         Toast.makeText(this.getApplicationContext(), "Logged-in", Toast.LENGTH_SHORT).show();
+        this.session.set(token, userID, type);
         this.setContentView();
     }
 
-    private void onLogout() {
+    private final void onLogout() {
         Toast.makeText(this.getApplicationContext(), "Logged-out", Toast.LENGTH_SHORT).show();
         this.session.reset();
         this.setContentView();
@@ -183,30 +184,28 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     /**
      * initialize facebook sdk
-     * @return true if user is already logged in
      */
-    private boolean initFacebook() {
+    private void initFacebook() {
         this.facebookCallbackManager = CallbackManager.Factory.create();
 
         this.facebookAccessTokenTracker = new AccessTokenTracker() {
             @Override
-            protected void onCurrentAccessTokenChanged(
-                    AccessToken oldAccessToken,
-                    AccessToken currentAccessToken) {
-                session.set(currentAccessToken);
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,
+                                                       AccessToken currentAccessToken) {
+                if (currentAccessToken == null) {
+                    onLogout();
+                }
             }
         };
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         session.set(accessToken);
-        return (accessToken != null);
     }
 
     /**
      * initialize google sdk
-     * @return true if user is already logged in
      */
-    private boolean initGoogle() {
+    private void initGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -214,24 +213,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        return (false);
     }
 
     /**
      * initialize twitter sdk
-     * @return true if user is already logged in
      */
-    private boolean initTwitter() {
+    private void initTwitter() {
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
-        return (false);
-    }
-
-    //setting up facebook connection
-    private void createGoogleButton() {
-        this.googleSignInButton = new SignInButton(this.getApplication());
-        this.googleSignInButton.setSize(SignInButton.SIZE_WIDE);
-        this.googleSignInButton.setOnClickListener(this);
     }
 
     //setting up facebook connection
@@ -246,7 +235,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        onLogin();
+                        onLogin(loginResult.getAccessToken().getToken(), loginResult.getAccessToken().getUserId(), Session.Type.Facebook);
                     }
 
                     @Override
@@ -260,6 +249,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 });
     }
 
+    //setting up facebook connection
+    private void createGoogleButton() {
+        this.googleSignInButton = new SignInButton(this.getApplication());
+        this.googleSignInButton.setSize(SignInButton.SIZE_WIDE);
+        this.googleSignInButton.setOnClickListener(this);
+    }
+
     private void createTwitterButton() {
         this.twitterLoginButton = new TwitterLoginButton(this) {
             @Override
@@ -270,8 +266,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         this.twitterLoginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
-                session.set(result);
-                onLogin();
+                onLogin(result.data.getAuthToken().token, Long.toString(result.data.getUserId()), Session.Type.Twitter);
             }
 
             @Override
@@ -290,8 +285,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                session.set(result.getSignInAccount());
-                this.onLogin();
+                this.onLogin(result.getSignInAccount().getIdToken(), result.getSignInAccount().getId(), Session.Type.Google);
             } else {
                 sessionCreationFailed();
             }

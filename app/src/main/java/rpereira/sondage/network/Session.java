@@ -42,6 +42,12 @@ public class Session {
         this.userID = "{USER_ID}";
     }
 
+    public void set(String token, String userID, Type type) {
+        this.type = type;
+        this.token = token;
+        this.userID = userID;
+    }
+
     public void set(AccessToken token) {
         if (token == null) {
             this.reset();
