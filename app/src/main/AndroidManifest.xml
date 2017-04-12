@@ -18,11 +18,6 @@
         </intent-filter>
     </activity>
 
-        <activity
-            android:name=".activities.LoginActivity"
-            android:theme="@style/AppTheme.Dialog">
-        </activity>
-
         <activity android:name=".activities.informations.InformationActivity" />
 
         <meta-data

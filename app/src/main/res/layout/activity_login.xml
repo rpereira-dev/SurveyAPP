@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="rpereira.sondage.activities.LoginActivity">
+    tools:context="rpereira.sondage.network.session.LoginActivity">
 
     <TextView
         android:id="@+id/textview_login"

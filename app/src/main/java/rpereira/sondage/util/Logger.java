@@ -9,10 +9,11 @@ public class Logger {
     public static final void log(String msg) {
         System.out.println(msg);
     }
-    public static final void log(String ... msg) {
+
+    public static final void log(Object ... objs) {
         StringBuilder builder = new StringBuilder();
-        for (String str : msg) {
-            builder.append(str);
+        for (Object obj : objs) {
+            builder.append(obj.toString());
             builder.append(' ');
         }
         log(builder.toString());

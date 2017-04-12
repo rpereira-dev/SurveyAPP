@@ -17,6 +17,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+
 import rpereira.sondage.R;
 import rpereira.sondage.activities.home.ActivityTabHome;
 import rpereira.sondage.activities.home.HomeFragment;
@@ -27,6 +30,9 @@ import rpereira.sondage.activities.survey.ActivityTabSurvey;
 import rpereira.sondage.activities.survey.SurveyFragment;
 import rpereira.sondage.activities.trend.ActivityTabTrend;
 import rpereira.sondage.activities.trend.TrendFragment;
+import rpereira.sondage.network.session.GoogleSession;
+import rpereira.sondage.network.session.SessionFragment;
+import rpereira.sondage.network.session.SessionManager;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static java.security.AccessController.getContext;
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int TAB_PROFIL = 3;
     private static final int TAB_MAX    = 4;
 
+    private SessionManager sessionManager;
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -55,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //initialize session stuff
+        this.sessionManager = new SessionManager(this);
+        this.sessionManager.init();
+
+        //set tabs
         this.setContentView(R.layout.activity_main);
 
         //toolbar
@@ -102,6 +115,16 @@ public class MainActivity extends AppCompatActivity {
 
         //set default pager (and so toggle events to setup everything properly)
         this.viewPager.setCurrentItem(0);
+    }
+
+    public SessionManager getSessionManager() {
+        return (this.sessionManager);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.getSessionManager().onMainActivityResult(requestCode, resultCode, data);
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -155,35 +178,6 @@ public class MainActivity extends AppCompatActivity {
                     tab.setBlackIcon();
                 }
             }
-/*            switch (position) {
-                case TAB_HOME:
-                    this.tabs[TAB_HOME].setWhiteIcon();
-                    this.tabs[TAB_TREND].setBlackIcon();
-                    this.tabs[TAB_SURVEY].setBlackIcon();
-                    this.tabs[TAB_PROFIL].setBlackIcon();
-                    break ;
-
-                case TAB_TREND:
-                    this.tabs[TAB_HOME].setBlackIcon();
-                    this.tabs[TAB_TREND].setWhiteIcon();
-                    this.tabs[TAB_SURVEY].setBlackIcon();
-                    this.tabs[TAB_PROFIL].setBlackIcon();
-                    break ;
-
-                case TAB_SURVEY:
-                    this.tabs[TAB_HOME].setBlackIcon();
-                    this.tabs[TAB_TREND].setBlackIcon();
-                    this.tabs[TAB_SURVEY].setWhiteIcon();
-                    this.tabs[TAB_PROFIL].setBlackIcon();
-                    break ;
-
-                case TAB_PROFIL:
-                    this.tabs[TAB_HOME].setBlackIcon();
-                    this.tabs[TAB_TREND].setBlackIcon();
-                    this.tabs[TAB_SURVEY].setBlackIcon();
-                    this.tabs[TAB_PROFIL].setWhiteIcon();
-                    break ;
-            }*/
         }
     }
 }
