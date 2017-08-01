@@ -1,33 +1,18 @@
-package rpereira.sondage.activities;
+package rpereira.sondage.activities.views;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.support.annotation.Dimension;
-import android.support.constraint.ConstraintLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import rpereira.sondage.R;
-import rpereira.sondage.util.Logger;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+import rpereira.sondage.util.ViewUtils;
 
 /**
  * Created by Romain on 10/04/2017.
@@ -78,8 +63,8 @@ public class ImageTextButton extends LinearLayout {
 
         //textview setup
         layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8.0f, this.getResources().getDisplayMetrics());
-        layoutParams.setMargins(px, 0, 0, 0);
+        int px = ViewUtils.convertDPToPX(this.getContext(), 32.0f);
+        layoutParams.setMargins(0, px, 0, 0);
         this.textView.setLayoutParams(layoutParams);
         this.textView.setGravity(Gravity.CENTER_VERTICAL);
         this.textView.setText(text);

@@ -5,10 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import rpereira.sondage.R;
-import rpereira.sondage.activities.ImageTextButton;
 
 /**
  * Created by Romain on 08/04/2017.

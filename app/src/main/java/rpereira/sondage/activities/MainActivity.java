@@ -33,6 +33,7 @@ import rpereira.sondage.activities.trend.TrendFragment;
 import rpereira.sondage.network.session.GoogleSession;
 import rpereira.sondage.network.session.SessionFragment;
 import rpereira.sondage.network.session.SessionManager;
+import rpereira.sondage.util.ResourceManager;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static java.security.AccessController.getContext;
@@ -49,8 +50,13 @@ public class MainActivity extends AppCompatActivity {
     private static final int TAB_PROFIL = 3;
     private static final int TAB_MAX    = 4;
 
+    /** the session manager */
     private SessionManager sessionManager;
+
+    /** the toolbar */
     private Toolbar toolbar;
+
+    /** the tabs and pager linked to it */
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
@@ -62,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //initialize the resource manager
+        ResourceManager.onCreate(this);
 
         //initialize session stuff
         this.sessionManager = new SessionManager(this);

@@ -1,7 +1,6 @@
 package rpereira.sondage.network.session;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -33,37 +32,38 @@ public class FacebookSession extends Session {
         // App code
 
         GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        Logger.log(response.toString());
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                Logger.get().log(Logger.Level.DEBUG, response.toString());
 
-                        try {
-                            String name = object.getString("name");
-                            FacebookSession.super.setDisplayName(name);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                try {
+                    String name = object.getString("name");
+                    FacebookSession.super.setDisplayName(name);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                        try {
-                            String email = object.getString("email");
-                            FacebookSession.super.setEmail(email);
-                        } catch (JSONException e) {}
+                try {
+                    String email = object.getString("email");
+                    FacebookSession.super.setEmail(email);
+                } catch (JSONException e) {
+                }
 
-                        try {
-                            String birthday = object.getString("birthday");
-                            FacebookSession.super.setBirthdate(birthday);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                try {
+                    String birthday = object.getString("birthday");
+                    FacebookSession.super.setBirthdate(birthday);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                        try {
-                            String gender = object.getString("gender");
-                            FacebookSession.super.setGender(gender.equals("male") ? 0 : 1);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                try {
+                    String gender = object.getString("gender");
+                    FacebookSession.super.setGender(gender.equals("male") ? 0 : 1);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         Bundle parameters = new Bundle();
         parameters.putString("fields", "name,email,gender,birthday");
         request.setParameters(parameters);

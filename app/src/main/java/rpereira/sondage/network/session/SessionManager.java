@@ -3,6 +3,7 @@ package rpereira.sondage.network.session;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -15,10 +16,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.fabric.sdk.android.Fabric;
@@ -29,7 +32,7 @@ import rpereira.sondage.activities.MainActivity;
  * Created by Romain on 12/04/2017.
  */
 
-public class SessionManager implements GoogleApiClient.OnConnectionFailedListener {
+public class SessionManager implements OnConnectionFailedListener, OnSessionChangedListener {
 
     //twitter constants
     private static final String TWITTER_KEY = "q2CLPkdyG8LkrtfQsVyWriQ0E";
@@ -37,6 +40,9 @@ public class SessionManager implements GoogleApiClient.OnConnectionFailedListene
 
     /** the main activity reference */
     private MainActivity mainActivity;
+
+    /** the list of listener */
+    private ArrayList<OnSessionChangedListener> onSessionChangedListeners;
 
     /** the session */
     private Session session;
@@ -53,11 +59,14 @@ public class SessionManager implements GoogleApiClient.OnConnectionFailedListene
 
     public SessionManager(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+        this.onSessionChangedListeners = new ArrayList<OnSessionChangedListener>();
         this.session = null;
     }
 
     /** initialize the session system */
     public void init() {
+
+        this.addOnSessionChangedListener(this);
 
         //init social networks
         this.initFacebook();
@@ -67,6 +76,11 @@ public class SessionManager implements GoogleApiClient.OnConnectionFailedListene
 
     /** set the session */
     public void setSession(Session session) {
+
+        for (OnSessionChangedListener listener : this.onSessionChangedListeners) {
+            listener.onSessionChanged(session);
+        }
+
         if (this.session != null) {
             this.session.destroy();
         }
@@ -75,6 +89,16 @@ public class SessionManager implements GoogleApiClient.OnConnectionFailedListene
         if (this.sessionFragment != null) {
             this.hideSessionFragment();
         }
+    }
+
+    /** add a session login listener */
+    public void addOnSessionChangedListener(OnSessionChangedListener onSessionChangedListener) {
+        this.onSessionChangedListeners.add(onSessionChangedListener);
+    }
+
+    /** remove a session login listener */
+    public void removeOnSessionChangedListener(OnSessionChangedListener onSessionChangedListener) {
+        this.onSessionChangedListeners.remove(onSessionChangedListener);
     }
 
     /** return the main activity instance */
@@ -137,7 +161,7 @@ public class SessionManager implements GoogleApiClient.OnConnectionFailedListene
 
     /** called when the session creation fails */
     public void onSessionCreationFailed() {
-
+        Toast.makeText(this.getMainActivity(), "Authentification failed.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -165,4 +189,8 @@ public class SessionManager implements GoogleApiClient.OnConnectionFailedListene
         this.getFacebookCallbackManager().onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onSessionChanged(Session session) {
+        Toast.makeText(this.getMainActivity(), session == null ? "Logged-out" : "Logged-in", Toast.LENGTH_SHORT).show();
+    }
 }
